@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace app
 {
@@ -6,19 +7,23 @@ namespace app
     {
         static void Main(string[] args)
         {
-            var rpsRule = new RpsRule();
+            var serviceProvider = new ServiceCollection()
+                .AddSingleton<IRpsRule, RpsRule>()
+                .AddSingleton<IRpsGame, RpsGame>()
+                .AddSingleton<IRpsTournamentBuilder, RpsTournament>()
+                .AddSingleton<IRpsTournament, RpsTournament>()
+                .BuildServiceProvider();
 
-            var rpsGame = new RpsGame(rpsRule);
-            var winner = rpsGame.RpsGameWinner("[ [\"Armando\", \"P\"], [\"Dave\", \"S\"] ]");
+            var rpsGame = serviceProvider.GetService<IRpsGame>();
+            var gameWinner = rpsGame.RpsGameWinner("[ [\"Armando\", \"P\"], [\"Dave\", \"S\"] ]");
 
-            Console.WriteLine($"Vencedor: {winner}");
+            Console.WriteLine($"Vencedor: {gameWinner}");
 
-            var tournament = new RpsTournament(rpsGame);
+            var rpsTournament = serviceProvider.GetService<IRpsTournamentBuilder>();
+            var rpsTournamentWinner = rpsTournament.BuildTournament(bracketedArrayTournament)
+                                                        .RpsTournamentWinner();
 
-            var result = tournament.BuildTournament(bracketedArrayTournament)
-                                        .RpsTournamentWinner();
-
-            Console.WriteLine($"Vencedor: {result}");
+            Console.WriteLine($"Vencedor: {rpsTournamentWinner}");
         }
 
         private const string bracketedArrayTournament = 
