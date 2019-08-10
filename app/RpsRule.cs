@@ -4,28 +4,28 @@ namespace app
     {
         public Player Winner(Player player1, Player player2)
         {
-            if(player1.SelectedMove != player2.SelectedMove)
-            {
-                switch (player1.SelectedMove)
-                {
-                    case SelectOption.R:
-                        if(player2.SelectedMove == SelectOption.S)
-                            return player1;
-                        else return player2;
-                    case SelectOption.S:
-                        if(player2.SelectedMove == SelectOption.P)
-                            return player1;
-                        else return player2;
-                    case SelectOption.P:
-                        if(player2.SelectedMove == SelectOption.R)
-                            return player1;
-                        else return player2;                        
-                    default: 
-                        return player1;
-                }
-            }
-            else
+            if(player1.SelectedMove == player2.SelectedMove)
                 return player1;
+
+            switch (player1.SelectedMove)
+            {
+                case SelectOption.R:
+                    return Winner(player1, player2, SelectOption.S);
+                case SelectOption.S:
+                    return Winner(player1, player2, SelectOption.P);
+                case SelectOption.P:
+                    return Winner(player1, player2, SelectOption.R);
+                default: 
+                    return player1;
+            }
+        }
+
+        private Player Winner(Player player1, Player player2, SelectOption optionToCompare)
+        {
+            if(player2.SelectedMove == optionToCompare)
+                return player1;
+            
+            return player2;
         }
     }
 }

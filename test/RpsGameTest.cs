@@ -1,7 +1,6 @@
 using app;
 using NUnit.Framework;
 using app.Exceptions;
-using System;
 
 namespace Tests
 {
