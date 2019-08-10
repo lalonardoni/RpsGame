@@ -1,4 +1,5 @@
 using System;
+using app.Exceptions;
 using app.Extensions;
 
 namespace app
@@ -18,6 +19,9 @@ namespace app
         public T RpsGameWinner<T>(string bracketedGameArray)
         {
             var players = bracketedGameArray.MatchPlayers();
+
+            if (players.Count != 2)
+                throw new WrongNumberOfPlayersError();
 
             var player1 = new Player($"{players[0]}");
             var player2 = new Player($"{players[1]}");

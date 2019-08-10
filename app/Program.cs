@@ -7,7 +7,10 @@ namespace app
     {
         static void Main(string[] args)
         {
-            var bracketedArrayTournament = GetBracketedArrayTournament();
+            var rpsGame = new RpsGame();
+            var winner = rpsGame.RpsGameWinner("[ [\"Armando\", \"P\"], [\"Dave\", \"S\"] ]");
+
+            Console.WriteLine($"Vencedor: {winner}");
 
             var tournament = new RpsTournament(bracketedArrayTournament);
 
@@ -16,9 +19,8 @@ namespace app
             Console.WriteLine($"Vencedor: {result}");
         }
 
-        private static string GetBracketedArrayTournament()
-        {
-            return @"[
+        private const string bracketedArrayTournament = 
+            @"[
                 [   
                     [ ['Armando', 'P'], ['Dave', 'S'] ],      
                     [ ['Richard', 'R'], ['Michael', 'S'] ]
@@ -28,6 +30,5 @@ namespace app
                     [ ['David E.', 'R'], ['Richard X.', 'P'] ] 
                 ]
             ]";
-        }
     }
 }
