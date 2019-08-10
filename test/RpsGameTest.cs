@@ -31,6 +31,13 @@ namespace Tests
             Assert.That(() => rpsGame.RpsGameWinner(bracketedGameArray), Throws.TypeOf<NoSuchStrategyError>());
         }        
 
+        [TestCase("[ [\"Armando\", \"P\", \"P\"], [\"Dave\", \"S\", \"P\"] ]")]
+        [TestCase("[ [\"P\"], [\"Dave\"] ]")]
+        public void Deve_Retornar_Excecao_Caso_Nome_Jogador_E_Estrategia_Estejam_Fora_Do_Padrao(string bracketedGameArray)
+        {
+            Assert.That(() => rpsGame.RpsGameWinner(bracketedGameArray), Throws.TypeOf<WrongPlayerPatternError>());
+        }        
+
         [TestCase("[ ['David E.', 'R'], ['Richard X.', 'R'] ]", "[ ['David E.', 'R'] ]", Description = "Deve vencer o primeiro jogador, pois o jogo entre os dois é igual")]
         [TestCase("[ ['JOSE', 'p'], ['JOAO', 'p'] ]", "[ ['JOSE', 'p'] ]", Description = "Deve vencer o primeiro jogador, pois o jogo entre os dois é igual")]
         [TestCase("[ ['Jogador Tesoura', 'S'], ['Jogador Papel', 'P'] ]", "[ ['Jogador Tesoura', 'S'] ]", Description = "Deve vencer o jogador com tesoura")]

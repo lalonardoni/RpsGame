@@ -35,10 +35,10 @@ namespace app
             {
                 return _playerGame;
             }
-            set
+            private set
             {
                 if (value.Length != 2)
-                    throw new WrongNumberOfPlayersError();
+                    throw new WrongPlayerPatternError();
 
                 _playerGame = value;
             } 
