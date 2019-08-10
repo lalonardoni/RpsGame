@@ -8,9 +8,9 @@ namespace app
     {
         private IRpsRule rule;
 
-        public RpsGame()
+        public RpsGame(IRpsRule rule)
         {
-            this.rule = new RpsRule();
+            this.rule = rule;
         }
         public string RpsGameWinner(string bracketedGameArray)
         {

@@ -1,20 +1,18 @@
 using System.Linq;
 using app.Extensions;
+using app.Exceptions;
 
 namespace app
 {
-    public class RpsTournament
+    public class RpsTournament : IRpsTournamentBuilder, IRpsTournament
     {
         private RpsTournament[] tournamentsChildren;
         private string bracketedArray;
-        private RpsGame rpsGame;
+        private IRpsGame rpsGame;
 
-        public RpsTournament(string bracketedArray)
+        public RpsTournament(IRpsGame rpsGame)
         {
-            this.rpsGame = new RpsGame();
-            this.bracketedArray = bracketedArray;
-
-            BuildTournament(bracketedArray);
+            this.rpsGame = rpsGame;
         }
 
         public string RpsTournamentWinner()
@@ -35,9 +33,11 @@ namespace app
             return (T)this.rpsGame.RpsGameWinner<T>(bracketedArray);
         }
 
-        private void BuildTournament(string bracketedArray)
+        public IRpsTournament BuildTournament(string bracketedTournamentArray)
         {
-            var players = bracketedArray.MatchPlayers();
+            this.bracketedArray = bracketedTournamentArray;
+
+            var players = bracketedTournamentArray.MatchPlayers();
 
             if(players.Count%2 == 0)
             {
@@ -46,10 +46,19 @@ namespace app
                     int centerIndex = players.Count / 2;
                     this.tournamentsChildren = new RpsTournament[2];
 
-                    this.tournamentsChildren[0] = new RpsTournament(BracketedStringHelper.ToStringBracketed(players.Take(centerIndex)));
-                    this.tournamentsChildren[1] = new RpsTournament(BracketedStringHelper.ToStringBracketed(players.TakeLast(centerIndex)));
+                    this.tournamentsChildren[0] = new RpsTournament(this.rpsGame);
+                    this.tournamentsChildren[0].BuildTournament(BracketedStringHelper.ToStringBracketed(players.Take(centerIndex)));
+
+                    this.tournamentsChildren[1] = new RpsTournament(this.rpsGame);
+                    this.tournamentsChildren[1].BuildTournament(BracketedStringHelper.ToStringBracketed(players.TakeLast(centerIndex)));
                 }
             }
+            else
+            {
+                throw new WrongNumberOfPlayersError();
+            }
+
+            return this;
         }
     }
 }

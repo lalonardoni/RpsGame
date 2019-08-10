@@ -1,22 +1,19 @@
 using System;
 using app.Exceptions;
+using app.Extensions;
 
 namespace app
 {
     public class Player
     {
-        public Player(string bracketPlayer)
+        public Player(string bracketedPlayer)
         {
-            this.PlayerMove = bracketPlayer.Replace("[", string.Empty)
-                                            .Replace("]", string.Empty)
-                                            .Replace("'", string.Empty)
-                                            .Replace("\"", string.Empty)
-                                            .Split(',');
+            this.PlayerGame = bracketedPlayer.GetPlayerGame();
         }
         public string Name 
         { 
             get {
-                return PlayerMove[0].Trim();
+                return PlayerGame[0].Trim();
             }
         }
         public SelectOption SelectedMove 
@@ -24,26 +21,26 @@ namespace app
             get {
                     SelectOption strategy;
 
-                    if (!Enum.TryParse(PlayerMove[1], true, out strategy))
+                    if (!Enum.TryParse(PlayerGame[1], true, out strategy))
                         throw new NoSuchStrategyError();
 
                     return strategy;
             }
         }
 
-        private string[] _playerMove;
-        public string[] PlayerMove 
+        private string[] _playerGame;
+        public string[] PlayerGame 
         { 
             get
             {
-                return _playerMove;
+                return _playerGame;
             }
             set
             {
                 if (value.Length != 2)
                     throw new WrongNumberOfPlayersError();
 
-                _playerMove = value;
+                _playerGame = value;
             } 
         }
         

@@ -7,9 +7,13 @@ namespace Tests
     [TestFixture]
     public class RpsGameTest
     {
+        private IRpsGame rpsGame;
+
         [SetUp]
         public void Setup()
         {
+            var rpsRule = new RpsRule();
+            rpsGame = new RpsGame(rpsRule);
         }
 
 
@@ -17,8 +21,6 @@ namespace Tests
         [TestCase("[ [\"Armando\", \"P\"] ]")]
         public void Deve_Retornar_Excecao_Caso_Numero_Jogadores_Diferente_De_Dois(string bracketedGameArray)
         {
-            var rpsGame = new RpsGame();
-
             Assert.That(() => rpsGame.RpsGameWinner(bracketedGameArray), Throws.TypeOf<WrongNumberOfPlayersError>());
         }
 
@@ -26,8 +28,6 @@ namespace Tests
         [TestCase("[ [\"Armando\", \"z\"], [\"Dave\", \"y\"] ]")]
         public void Deve_Retornar_Excecao_Caso_Estrategia_Jogo_Diferente_RPS(string bracketedGameArray)
         {
-            var rpsGame = new RpsGame();
-
             Assert.That(() => rpsGame.RpsGameWinner(bracketedGameArray), Throws.TypeOf<NoSuchStrategyError>());
         }        
 
@@ -38,8 +38,6 @@ namespace Tests
         [TestCase("[ ['Jogador Papel', 'P'], ['Jogador Pedra', 'R'] ]", "[ ['Jogador Papel', 'P'] ]", Description = "Deve vencer o jogador com o papel")]
         public void Deve_Vencer_Jogador_Conforme_Regras_Estabelecidas_RPS(string bracketedGameArray, string expectedWinner)
         {
-            var rpsGame = new RpsGame();
-
             var expectedWinnerPlayer = new Player(expectedWinner);
             var winnerPlayer = rpsGame.RpsGameWinner<Player>(bracketedGameArray);
 

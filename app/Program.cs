@@ -6,14 +6,17 @@ namespace app
     {
         static void Main(string[] args)
         {
-            var rpsGame = new RpsGame();
+            var rpsRule = new RpsRule();
+
+            var rpsGame = new RpsGame(rpsRule);
             var winner = rpsGame.RpsGameWinner("[ [\"Armando\", \"P\"], [\"Dave\", \"S\"] ]");
 
             Console.WriteLine($"Vencedor: {winner}");
 
-            var tournament = new RpsTournament(bracketedArrayTournament);
+            var tournament = new RpsTournament(rpsGame);
 
-            var result = tournament.RpsTournamentWinner();
+            var result = tournament.BuildTournament(bracketedArrayTournament)
+                                        .RpsTournamentWinner();
 
             Console.WriteLine($"Vencedor: {result}");
         }

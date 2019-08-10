@@ -20,6 +20,15 @@ namespace app.Extensions
             var players = Regex.Matches(bracketedArray, pattern);
 
             return players;
-        }        
+        }    
+
+        public static string[] GetPlayerGame(this string bracketedPlayer)
+        {
+            return bracketedPlayer.Replace("[", string.Empty)
+                                    .Replace("]", string.Empty)
+                                    .Replace("'", string.Empty)
+                                    .Replace("\"", string.Empty)
+                                    .Split(',');
+        }               
     }
 }
